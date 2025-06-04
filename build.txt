@@ -1,0 +1,3 @@
+displayName = Nightreign Revives
+author = stormytuna
+version = 0.1
