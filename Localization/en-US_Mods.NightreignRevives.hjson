@@ -1,1 +1,4 @@
-
+NPCs: {
+	NightreignReviveNPC.DisplayName: Nightreign Revive N P C
+	ReviveCircleNPC.DisplayName: Revive Circle N P C
+}

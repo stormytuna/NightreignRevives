@@ -1,15 +1,41 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
+using System.IO;
+using NightreignRevives.Content;
+using NightreignRevives.Core;
+using Terraria.Chat;
 
-namespace NightreignRevives
+namespace NightreignRevives;
+
+public class NightreignRevives : Mod
 {
-	// Please read https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-Guide#mod-skeleton-contents for more information about the various files in a mod.
-	public class NightreignRevives : Mod
+	public enum MessageType : byte
 	{
+		PlayerRevived,
+		HitReviveNPC,
+	}
 
+	public override void HandlePacket(BinaryReader reader, int whoAmI) {
+		MessageType message = (MessageType)reader.ReadByte();
+
+		// TODO: move to classes themselves, switch case is annoying with var names in scope
+		// TODO: handle stuff without assumption we're sending from server
+		switch (message) {
+			case MessageType.PlayerRevived:
+				int playerWhoAmI = reader.Read7BitEncodedInt();
+				Main.player[playerWhoAmI].GetModPlayer<NightreignRevivePlayer>().Revive();
+				break;
+			case MessageType.HitReviveNPC:
+				int npcWhoAmI = reader.Read7BitEncodedInt();
+				ReviveCircleNPC.ReceiveReviveNPCHit(npcWhoAmI);
+				
+				if (Main.netMode == NetmodeID.Server) {
+					ReviveCircleNPC.BroadcastReviveNPCHit(-1, whoAmI, npcWhoAmI);
+				}
+				
+				break;
+			default:
+				Logger.Error("Unknown message type: " + message);
+				return;
+		}
 	}
 }
