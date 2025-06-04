@@ -4,5 +4,5 @@ namespace NightreignRevives.Core;
 
 public class NightreignReviveCircle : UIElement
 {
-		
+
 }

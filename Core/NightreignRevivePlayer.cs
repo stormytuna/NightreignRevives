@@ -6,12 +6,12 @@ namespace NightreignRevives.Core;
 public class NightreignRevivePlayer : ModPlayer
 {
 	public int NumDownsThisFight = 0;
-	
+
 	private bool _beenRevived = false;
 	private Point? _spawnPos = null;
-	
+
 	public void Revive() {
-		_beenRevived = true;	
+		_beenRevived = true;
 	}
 
 	public override void Load() {
@@ -19,8 +19,8 @@ public class NightreignRevivePlayer : ModPlayer
 	}
 
 	private static void RespawnAtDownedLocation(On_Player.orig_Spawn orig, Player self, PlayerSpawnContext context) {
-		var nrPlayer = self.GetModPlayer<NightreignRevivePlayer>();
-		
+		NightreignRevivePlayer nrPlayer = self.GetModPlayer<NightreignRevivePlayer>();
+
 		orig(self, context);
 
 		if (nrPlayer._spawnPos is not null) {
@@ -43,7 +43,7 @@ public class NightreignRevivePlayer : ModPlayer
 	public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource) {
 		_spawnPos = Player.Center.ToPoint();
 		NumDownsThisFight++;
-		
+
 		if (Main.netMode != NetmodeID.Server /*&& NPCHelpers.AnyActiveBossOrInvasion()*/) {
 			return;
 		}
@@ -57,17 +57,17 @@ public class NightreignRevivePlayer : ModPlayer
 			_beenRevived = false;
 			Player.respawnTimer = 0;
 		}
-		
+
 		if (Player.AnyReviveNPC(out _)) {
 			Player.respawnTimer = 999;
 		}
-		
+
 		// TODO: HANDLE REVIVE AFTER BOSS
 		// TODO: SPECIAL DEATH SCREEN
 	}
 
 	public static void BroadcastRevive(int playerWhoAmI) {
-		var packet = ModContent.GetInstance<NightreignRevives>().GetPacket();
+		ModPacket packet = ModContent.GetInstance<NightreignRevives>().GetPacket();
 		packet.Write((byte)NightreignRevives.MessageType.PlayerRevived);
 		packet.Write7BitEncodedInt(playerWhoAmI);
 		packet.Send();

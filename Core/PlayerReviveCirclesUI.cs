@@ -6,16 +6,18 @@ namespace NightreignRevives.Core;
 [Autoload(Side = ModSide.Client)]
 public class PlayerReviveCirclesUI : ModSystem
 {
-	public static PlayerReviveCirclesUI Instance => ModContent.GetInstance<PlayerReviveCirclesUI>();
-	
+	public static PlayerReviveCirclesUI Instance {
+		get => ModContent.GetInstance<PlayerReviveCirclesUI>();
+	}
+
 	private UserInterface _interface;
 	private PlayerReviveCirclesUIState _state;
-	
+
 	private GameTime _oldGameTime;
-	
+
 	public override void Load() {
 		_interface = new UserInterface();
-		
+
 		_state = new PlayerReviveCirclesUIState();
 		_interface.SetState(_state);
 	}
@@ -33,7 +35,7 @@ public class PlayerReviveCirclesUI : ModSystem
 			Mod.Logger.Error("Couldn't find Death Text interface layer ??");
 			return;
 		}
-		
+
 		bool DrawUI() {
 			if (_oldGameTime is not null && _interface?.CurrentState is not null) {
 				_interface.Draw(Main.spriteBatch, _oldGameTime);

@@ -18,14 +18,14 @@ public class PlayerReviveCirclesUIState : UIState
 
 	protected override void DrawSelf(SpriteBatch spriteBatch) {
 		base.DrawSelf(spriteBatch);
-		
-		foreach (var player in Main.ActivePlayers) {
+
+		foreach (Player player in Main.ActivePlayers) {
 			if (player.AnyReviveNPC(out NPC reviveNPC)) {
-				Rectangle rect = new ((int)(reviveNPC.Center.X - _outlineTexture.Width() / 2 - Main.screenPosition.X), (int)(reviveNPC.Center.Y - _outlineTexture.Height() / 2 - Main.screenPosition.Y), _outlineTexture.Width(), _outlineTexture.Height());
+				Rectangle rect = new((int)(reviveNPC.Center.X - _outlineTexture.Width() / 2 - Main.screenPosition.X), (int)(reviveNPC.Center.Y - _outlineTexture.Height() / 2 - Main.screenPosition.Y), _outlineTexture.Width(), _outlineTexture.Height());
 				Main.spriteBatch.Draw(_outlineTexture.Value, rect, Color.White);
-				
-				Main.spriteBatch.TakeSnapshotAndEnd(out var sbParams);
-				
+
+				Main.spriteBatch.TakeSnapshotAndEnd(out SpriteBatchParams sbParams);
+
 				float minProgress = player.GetModPlayer<NightreignRevivePlayer>().NumDownsThisFight switch {
 					1 => 0.66f,
 					2 => 0.33f,
@@ -33,11 +33,11 @@ public class PlayerReviveCirclesUIState : UIState
 				};
 				float progress = Utils.Remap(reviveNPC.life, 0f, reviveNPC.lifeMax, 1f, minProgress, false);
 				_radialFillEffect.Value.Parameters["progress"].SetValue(progress);
-				
+
 				Main.spriteBatch.Begin(sbParams with { Effect = _radialFillEffect.Value });
-				
+
 				Main.spriteBatch.Draw(_fillTexture.Value, rect, Color.White);
-				
+
 				Main.spriteBatch.Restart(sbParams);
 			}
 		}

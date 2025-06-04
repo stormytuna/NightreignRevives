@@ -11,7 +11,7 @@ public class ReplaceDeathScreen : ModSystem
 			Mod.Logger.Error("Couldn't find Death Text interface layer ??");
 			return;
 		}
-		
+
 		layers[index].Active = false;
 		// TODO: Add own custom death screen!
 	}

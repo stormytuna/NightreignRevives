@@ -8,17 +8,17 @@ public class ReviveCircleNPC : ModNPC
 {
 	public int ForClient;
 	public int LifeMax;
-	
+
 	public const int DamageDecayTimerMax = 1 * 60;
 	public int DamageDecayTimer = DamageDecayTimerMax;
-	
+
 	private bool _firstFrame = true;
 
 	public override void SetDefaults() {
 		NPC.width = 40;
 		NPC.height = 40;
 		NPC.lifeMax = 10;
-		
+
 		NPC.aiStyle = -1;
 		NPC.knockBackResist = 0f;
 		NPC.noGravity = true;
@@ -75,7 +75,7 @@ public class ReviveCircleNPC : ModNPC
 		if (Main.netMode != NetmodeID.Server) {
 			return;
 		}
-		
+
 		NightreignRevivePlayer.BroadcastRevive(ForClient);
 		Main.player[ForClient].GetModPlayer<NightreignRevivePlayer>().Revive();
 	}
@@ -84,21 +84,21 @@ public class ReviveCircleNPC : ModNPC
 		writer.Write7BitEncodedInt(ForClient);
 		writer.Write(LifeMax);
 	}
-	
+
 	public override void ReceiveExtraAI(BinaryReader reader) {
 		ForClient = reader.Read7BitEncodedInt();
-		LifeMax = reader.ReadInt32();	
+		LifeMax = reader.ReadInt32();
 	}
 
 	public static void BroadcastReviveNPCHit(int toWho, int fromWho, int npcWhoAmI) {
-		var packet = ModContent.GetInstance<NightreignRevives>().GetPacket();
+		ModPacket packet = ModContent.GetInstance<NightreignRevives>().GetPacket();
 		packet.Write((byte)NightreignRevives.MessageType.HitReviveNPC);
 		packet.Write7BitEncodedInt(npcWhoAmI);
 		packet.Send(toWho, fromWho);
 	}
-	
+
 	public static void ReceiveReviveNPCHit(int npcWhoAmI) {
-		var npc = Main.npc[npcWhoAmI];
+		NPC npc = Main.npc[npcWhoAmI];
 		if (npc.ModNPC is ReviveCircleNPC nrNPC) {
 			nrNPC.ResetDamageDecay();
 		}
