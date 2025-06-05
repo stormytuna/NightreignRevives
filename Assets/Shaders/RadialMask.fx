@@ -12,7 +12,7 @@ float4 RadialMask(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLO
     float mask = step(progress, normalizedAngle);
 
     float4 color = tex2D(uImage0, coords);
-    return color * mask;
+    return color * mask * sampleColor.a;
 }
 
 technique Technique1
