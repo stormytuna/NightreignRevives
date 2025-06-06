@@ -35,7 +35,7 @@ public class PlayerReviveCirclesUI : ModSystem
 			Mod.Logger.Error("Couldn't find Death Text interface layer ??");
 			return;
 		}
-		
+
 		bool DrawUI() {
 			if (_oldGameTime is not null && _interface?.CurrentState is not null) {
 				_interface.Draw(Main.spriteBatch, _oldGameTime);

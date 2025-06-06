@@ -3,7 +3,7 @@ namespace NightreignRevives.Core;
 public class SingleplayerWarningSystem : ModSystem
 {
 	private bool _warned = false;
-	
+
 	public override void PreUpdatePlayers() {
 		if (!_warned && Main.netMode == NetmodeID.SinglePlayer) {
 			_warned = true;

@@ -36,8 +36,8 @@ public class PlayerReviveCirclesUIState : UIState
 		Main.spriteBatch.Begin(sbParams);
 	}
 
-	private void DrawReviveCircle(NPC reviveNPC, ReviveCircleNPC reviveCircleNPC, Player player) {
-		var drawData = new DrawData {
+	private static void DrawReviveCircle(NPC reviveNPC, ReviveCircleNPC reviveCircleNPC, Player player) {
+		DrawData drawData = new() {
 			texture = _outlineTexture.Value,
 			position = (reviveNPC.Center - Main.screenPosition).Floor(),
 			sourceRect = _fillTexture.Frame(),
@@ -67,12 +67,12 @@ public class PlayerReviveCirclesUIState : UIState
 		_radialFillEffect.Value.Parameters["textureSize"].SetValue(_fillTexture.Size());
 
 		Main.spriteBatch.Begin(circleSBParams with { Effect = _radialFillEffect.Value });
-				
-		var fillDrawData = drawData with {
+
+		DrawData fillDrawData = drawData with {
 			texture = _fillTexture.Value,
 		};
 		fillDrawData.Draw(Main.spriteBatch);
-				
+
 		Main.spriteBatch.End();
 	}
 }
