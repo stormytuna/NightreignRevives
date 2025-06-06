@@ -6,7 +6,6 @@ namespace NightreignRevives.Core;
 public class NightreignRevivePlayer : ModPlayer
 {
 	public int NumDownsThisFight = 0;
-	public int FadeIn = 0;
 	
 	private bool _beenRevived = false;
 	private Point? _spawnPos = null;
@@ -57,6 +56,7 @@ public class NightreignRevivePlayer : ModPlayer
 		if (_beenRevived) {
 			_beenRevived = false;
 			Player.respawnTimer = 0;
+			return;
 		}
 
 		if (Player.AnyReviveNPC(out _)) {

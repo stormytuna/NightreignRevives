@@ -1,4 +1,5 @@
 using FishUtils.DataStructures;
+using NightreignRevives.Content;
 using ReLogic.Content;
 using Terraria.UI;
 
@@ -23,10 +24,11 @@ public class PlayerReviveCirclesUIState : UIState
 		//       Restarting SB multiple times per downed player is a bit much, but i doubt more than a dozen people will be downed at once
 		foreach (Player player in Main.ActivePlayers) {
 			if (player.AnyReviveNPC(out NPC reviveNPC)) {
-				var nrPlayer = player.GetModPlayer<NightreignRevivePlayer>();
-				nrPlayer.FadeIn++;
+				if (reviveNPC.ModNPC is not ReviveCircleNPC reviveCircleNPC) {
+					continue;
+				}
 				
-				float opacity = Utils.Remap(nrPlayer.FadeIn, 30f, 60f, 0f, 1f);
+				float opacity = Utils.Remap(reviveCircleNPC.FadeIn, 30f, 60f, 0f, 1f);
 				
 				Rectangle rect = new((int)(reviveNPC.Center.X - _outlineTexture.Width() / 2 - Main.screenPosition.X), (int)(reviveNPC.Center.Y - _outlineTexture.Height() / 2 - Main.screenPosition.Y), _outlineTexture.Width(), _outlineTexture.Height());
 				Main.spriteBatch.Draw(_outlineTexture.Value, rect, Color.White * opacity);
@@ -41,6 +43,7 @@ public class PlayerReviveCirclesUIState : UIState
 				
 				float fillProgress = Utils.Remap(reviveNPC.life, 0f, reviveNPC.lifeMax, 1f, minProgress, false);
 				_radialFillEffect.Value.Parameters["progress"].SetValue(fillProgress);
+				_radialFillEffect.Value.Parameters["textureSize"].SetValue(_fillTexture.Size());
 
 				Main.spriteBatch.Begin(sbParams with { Effect = _radialFillEffect.Value });
 				Main.spriteBatch.Draw(_fillTexture.Value, rect, Color.White * opacity);
