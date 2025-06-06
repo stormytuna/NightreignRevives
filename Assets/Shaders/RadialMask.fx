@@ -12,11 +12,11 @@ float2 snapToGrid(float2 coords) {
 
 float4 RadialMask(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
 {
-    coords = snapToGrid(coords);
+    float2 maskUV = snapToGrid(coords);
 
     float2 center = float2(0.5, 0.5);
-    float2 toCoords = coords - center;
-    float angle = atan2(-toCoords.y, toCoords.x);
+    float2 toMaskUV = maskUV - center;
+    float angle = atan2(-toMaskUV.y, toMaskUV.x);
 
     float normalizedAngle = frac((angle / (2 * 3.14159265)) + 0.75);
     float mask = step(progress, normalizedAngle);

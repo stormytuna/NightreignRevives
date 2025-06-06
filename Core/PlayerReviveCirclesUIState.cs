@@ -22,6 +22,9 @@ public class PlayerReviveCirclesUIState : UIState
 
 		// TODO: Maybe draw all outlines, then all fill and backgrounds?
 		//       Restarting SB multiple times per downed player is a bit much, but i doubt more than a dozen people will be downed at once
+		
+		Main.spriteBatch.TakeSnapshotAndEnd(out SpriteBatchParams sbParams);
+		
 		foreach (Player player in Main.ActivePlayers) {
 			if (player.AnyReviveNPC(out NPC reviveNPC)) {
 				if (reviveNPC.ModNPC is not ReviveCircleNPC reviveCircleNPC) {
@@ -31,9 +34,11 @@ public class PlayerReviveCirclesUIState : UIState
 				float opacity = Utils.Remap(reviveCircleNPC.FadeIn, 30f, 60f, 0f, 1f);
 				
 				Rectangle rect = new((int)(reviveNPC.Center.X - _outlineTexture.Width() / 2 - Main.screenPosition.X), (int)(reviveNPC.Center.Y - _outlineTexture.Height() / 2 - Main.screenPosition.Y), _outlineTexture.Width(), _outlineTexture.Height());
+				
+				var circleSBParams = SpriteBatchParams.Default;
+				Main.spriteBatch.Begin(circleSBParams);
 				Main.spriteBatch.Draw(_outlineTexture.Value, rect, Color.White * opacity);
-
-				Main.spriteBatch.TakeSnapshotAndEnd(out SpriteBatchParams sbParams);
+				Main.spriteBatch.End();
 
 				float minProgress = player.GetModPlayer<NightreignRevivePlayer>().NumDownsThisFight switch {
 					1 => 0.66f,
@@ -45,10 +50,12 @@ public class PlayerReviveCirclesUIState : UIState
 				_radialFillEffect.Value.Parameters["progress"].SetValue(fillProgress);
 				_radialFillEffect.Value.Parameters["textureSize"].SetValue(_fillTexture.Size());
 
-				Main.spriteBatch.Begin(sbParams with { Effect = _radialFillEffect.Value });
+				Main.spriteBatch.Begin(circleSBParams with { Effect = _radialFillEffect.Value });
 				Main.spriteBatch.Draw(_fillTexture.Value, rect, Color.White * opacity);
-				Main.spriteBatch.Restart(sbParams);
+				Main.spriteBatch.End();
 			}
 		}
+		
+		Main.spriteBatch.Begin(sbParams);
 	}
 }
