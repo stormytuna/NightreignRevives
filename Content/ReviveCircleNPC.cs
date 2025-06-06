@@ -17,9 +17,9 @@ public class ReviveCircleNPC : ModNPC
 	public int DamageDecayTimer = DamageDecayTimerMax;
 
 	private bool _firstFrame = true;
-	
+
 	private bool _dying = false;
-	private bool _dead = false;
+	private readonly bool _dead = false;
 
 	public override void SetDefaults() {
 		NPC.width = 40;
@@ -41,7 +41,7 @@ public class ReviveCircleNPC : ModNPC
 		if (_firstFrame) {
 			_firstFrame = false;
 			NPC.life = NPC.lifeMax = LifeMax;
-			
+
 			DustHelpers.MakeDustExplosion(NPC.Center, 30f, ModContent.DustType<ReviveCircleDust>(), 25, 1f, 5f, scale: 1.5f);
 		}
 
@@ -49,10 +49,10 @@ public class ReviveCircleNPC : ModNPC
 			FadeIn--;
 			if (FadeIn < 0) {
 				NPC.life = 0;
-				
+
 				DustHelpers.MakeDustExplosion(NPC.Center, 30f, ModContent.DustType<ReviveCircleDust>(), 20, 2f, 7f);
-				
-				var sound = SoundID.DD2_BetsyFireballImpact with {
+
+				SoundStyle sound = SoundID.DD2_BetsyFireballImpact with {
 					PitchRange = (-0.8f, -0.5f),
 					Variants = [0], // Want specifically variant 0
 				};
@@ -66,19 +66,19 @@ public class ReviveCircleNPC : ModNPC
 
 			for (int i = 0; i < 3; i++) {
 				Vector2 offset = Main.rand.NextVector2Circular(20f, 20f);
-				var dust = Dust.NewDustPerfect(NPC.Center + offset, ModContent.DustType<ReviveCircleDust>());
+				Dust dust = Dust.NewDustPerfect(NPC.Center + offset, ModContent.DustType<ReviveCircleDust>());
 				dust.scale = Main.rand.NextFloat(0.8f, 1.2f);
 				dust.velocity *= Main.rand.NextFloat(2f, 5f);
 			}
-			
+
 			return;
 		}
-		
+
 		FadeIn++;
 		if (FadeIn > 60) {
 			FadeIn = 60;
 		}
-		
+
 		if (DamageDecayTimer > 0) {
 			DamageDecayTimer--;
 		}
@@ -92,11 +92,11 @@ public class ReviveCircleNPC : ModNPC
 		float numDust = Utils.Remap(NPC.life, 0f, NPC.lifeMax, 1.5f, 0.1f);
 		for (float i = 0; i < numDust; i++) {
 			if (i == 0 && Main.rand.NextFloat() > numDust % 1f) {
-				continue;			
+				continue;
 			}
-			
+
 			Vector2 offset = Main.rand.NextVector2Circular(8f, 8f);
-			var dust = Dust.NewDustPerfect(NPC.Center + offset, ModContent.DustType<ReviveCircleDust>());
+			Dust dust = Dust.NewDustPerfect(NPC.Center + offset, ModContent.DustType<ReviveCircleDust>());
 			float startScale = Utils.Remap(NPC.life, 0f, NPC.lifeMax, 1.2f, 0.9f);
 			dust.scale = startScale + Main.rand.NextFloat(0.3f);
 			dust.velocity *= Utils.Remap(NPC.life, 0f, NPC.lifeMax, 0.5f, 0.1f);
@@ -118,7 +118,7 @@ public class ReviveCircleNPC : ModNPC
 		if (_dying) {
 			return false;
 		}
-		
+
 		return base.CanHitNPC(target);
 	}
 
@@ -126,7 +126,7 @@ public class ReviveCircleNPC : ModNPC
 		modifiers.DamageVariationScale *= 0f;
 		modifiers.HideCombatText();
 	}
-	
+
 	public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone) {
 		ResetDamageDecay();
 
@@ -142,16 +142,16 @@ public class ReviveCircleNPC : ModNPC
 			BroadcastReviveNPCHit(-1, Main.myPlayer, NPC.whoAmI);
 		}
 	}
-	
+
 	public override void HitEffect(NPC.HitInfo hit) {
 		if (Main.netMode == NetmodeID.Server) {
 			return;
 		}
-		
+
 		DustHelpers.MakeDustExplosion(NPC.Center, 30f, ModContent.DustType<ReviveCircleDust>(), 10, 1f, 5f);
-		
+
 		// TODO: variance as npc gets closer to dying
-		var sound = SoundID.DD2_BetsyFireballShot with {
+		SoundStyle sound = SoundID.DD2_BetsyFireballShot with {
 			Volume = 0.4f,
 			PitchRange = (-0.8f, -0.5f),
 		};

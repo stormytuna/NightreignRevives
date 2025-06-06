@@ -23,14 +23,14 @@ public class ReviveCircleDust : ModDust
 		}
 
 		dust.rotation += dust.velocity.X * 0.1f;
-		
+
 		if (dust.customData is "GoUpPlease") {
 			dust.velocity.Y -= 0.05f;
 			if (dust.velocity.Y > 8f) {
 				dust.velocity.Y = 8f;
 			}
 		}
-		
+
 		dust.position += dust.velocity;
 
 		return false;
