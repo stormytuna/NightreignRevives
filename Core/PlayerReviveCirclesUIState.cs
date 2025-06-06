@@ -1,6 +1,7 @@
 using FishUtils.DataStructures;
 using NightreignRevives.Content;
 using ReLogic.Content;
+using Terraria.DataStructures;
 using Terraria.UI;
 
 namespace NightreignRevives.Core;
@@ -20,9 +21,6 @@ public class PlayerReviveCirclesUIState : UIState
 	protected override void DrawSelf(SpriteBatch spriteBatch) {
 		base.DrawSelf(spriteBatch);
 
-		// TODO: Maybe draw all outlines, then all fill and backgrounds?
-		//       Restarting SB multiple times per downed player is a bit much, but i doubt more than a dozen people will be downed at once
-
 		Main.spriteBatch.TakeSnapshotAndEnd(out SpriteBatchParams sbParams);
 
 		foreach (Player player in Main.ActivePlayers) {
@@ -31,31 +29,50 @@ public class PlayerReviveCirclesUIState : UIState
 					continue;
 				}
 
-				float opacity = Utils.Remap(reviveCircleNPC.FadeIn, 30f, 60f, 0f, 1f);
-
-				Rectangle rect = new((int)(reviveNPC.Center.X - _outlineTexture.Width() / 2 - Main.screenPosition.X), (int)(reviveNPC.Center.Y - _outlineTexture.Height() / 2 - Main.screenPosition.Y), _outlineTexture.Width(), _outlineTexture.Height());
-
-				SpriteBatchParams circleSBParams = SpriteBatchParams.Default;
-				Main.spriteBatch.Begin(circleSBParams);
-				Main.spriteBatch.Draw(_outlineTexture.Value, rect, Color.White * opacity);
-				Main.spriteBatch.End();
-
-				float minProgress = player.GetModPlayer<NightreignRevivePlayer>().NumDownsThisFight switch {
-					1 => 0.66f,
-					2 => 0.33f,
-					_ => 0,
-				};
-
-				float fillProgress = Utils.Remap(reviveNPC.life, 0f, reviveNPC.lifeMax, 1f, minProgress, false);
-				_radialFillEffect.Value.Parameters["progress"].SetValue(fillProgress);
-				_radialFillEffect.Value.Parameters["textureSize"].SetValue(_fillTexture.Size());
-
-				Main.spriteBatch.Begin(circleSBParams with { Effect = _radialFillEffect.Value });
-				Main.spriteBatch.Draw(_fillTexture.Value, rect, Color.White * opacity);
-				Main.spriteBatch.End();
+				DrawReviveCircle(reviveNPC, reviveCircleNPC, player);
 			}
 		}
 
 		Main.spriteBatch.Begin(sbParams);
+	}
+
+	private void DrawReviveCircle(NPC reviveNPC, ReviveCircleNPC reviveCircleNPC, Player player) {
+		var drawData = new DrawData {
+			texture = _outlineTexture.Value,
+			position = (reviveNPC.Center - Main.screenPosition).Floor(),
+			sourceRect = _fillTexture.Frame(),
+			origin = _fillTexture.Size() / 2f,
+			color = Color.White * reviveCircleNPC.Opacity,
+			scale = new Vector2(1f),
+		};
+
+		if (player.whoAmI == Main.myPlayer) {
+			drawData.position = (Main.ScreenSize.ToVector2() / 2f).Floor();
+			drawData.scale = new Vector2(2f);
+		}
+
+		SpriteBatchParams circleSBParams = SpriteBatchParams.Default;
+		Main.spriteBatch.Begin(circleSBParams);
+		drawData.Draw(Main.spriteBatch);
+		Main.spriteBatch.End();
+
+		float minProgress = player.GetModPlayer<NightreignRevivePlayer>().NumDownsThisFight switch {
+			1 => 0.66f,
+			2 => 0.33f,
+			_ => 0,
+		};
+
+		float fillProgress = Utils.Remap(reviveNPC.life, 0f, reviveNPC.lifeMax, 1f, minProgress, false);
+		_radialFillEffect.Value.Parameters["progress"].SetValue(fillProgress);
+		_radialFillEffect.Value.Parameters["textureSize"].SetValue(_fillTexture.Size());
+
+		Main.spriteBatch.Begin(circleSBParams with { Effect = _radialFillEffect.Value });
+				
+		var fillDrawData = drawData with {
+			texture = _fillTexture.Value,
+		};
+		fillDrawData.Draw(Main.spriteBatch);
+				
+		Main.spriteBatch.End();
 	}
 }

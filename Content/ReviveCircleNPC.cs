@@ -11,15 +11,16 @@ public class ReviveCircleNPC : ModNPC
 {
 	public int ForClient;
 	public int LifeMax;
-	public int FadeIn;
+	public float Opacity;
 
 	public const int DamageDecayTimerMax = 1 * 60;
 	public int DamageDecayTimer = DamageDecayTimerMax;
 
 	private bool _firstFrame = true;
-
 	private bool _dying = false;
-	private readonly bool _dead = false;
+	private int _dyingTimer = 90;
+	private bool _dead = false;
+	private int _opacityDelay;
 
 	public override void SetDefaults() {
 		NPC.width = 40;
@@ -44,10 +45,30 @@ public class ReviveCircleNPC : ModNPC
 
 			DustHelpers.MakeDustExplosion(NPC.Center, 30f, ModContent.DustType<ReviveCircleDust>(), 25, 1f, 5f, scale: 1.5f);
 		}
+		
+		float numDust = Utils.Remap(NPC.life, 0f, NPC.lifeMax, 1.5f, 0.3f);
+		for (float i = 0; i < numDust; i++) {
+			if (i == 0 && Main.rand.NextFloat() > numDust % 1f) {
+				continue;
+			}
 
+			Vector2 offset = Main.rand.NextVector2Circular(8f, 8f);
+			Dust dust = Dust.NewDustPerfect(NPC.Center + offset, ModContent.DustType<ReviveCircleDust>());
+			float startScale = Utils.Remap(NPC.life, 0f, NPC.lifeMax, 1.2f, 0.9f);
+			dust.scale = startScale + Main.rand.NextFloat(0.3f);
+			dust.velocity *= Utils.Remap(NPC.life, 0f, NPC.lifeMax, 0.5f, 0.1f);
+			dust.customData = "GoUpPlease";
+		}
+		
 		if (_dying) {
-			FadeIn--;
-			if (FadeIn < 0) {
+			_dyingTimer--;
+			
+			Opacity -= 0.03f;
+			if (Opacity < 0) {
+				Opacity = 0;
+			}
+			
+			if (_dyingTimer <= 0) {
 				NPC.life = 0;
 
 				DustHelpers.MakeDustExplosion(NPC.Center, 30f, ModContent.DustType<ReviveCircleDust>(), 20, 2f, 7f);
@@ -62,22 +83,28 @@ public class ReviveCircleNPC : ModNPC
 					NightreignRevivePlayer.BroadcastRevive(ForClient);
 					Main.player[ForClient].GetModPlayer<NightreignRevivePlayer>().Revive();
 				}
+				
+				_dead = true;
 			}
 
-			for (int i = 0; i < 3; i++) {
-				Vector2 offset = Main.rand.NextVector2Circular(20f, 20f);
+			for (int i = 0; i < 2; i++) {
+				Vector2 offset = Main.rand.NextVector2CircularEdge(40f, 40f);
 				Dust dust = Dust.NewDustPerfect(NPC.Center + offset, ModContent.DustType<ReviveCircleDust>());
-				dust.scale = Main.rand.NextFloat(0.8f, 1.2f);
-				dust.velocity *= Main.rand.NextFloat(2f, 5f);
+				dust.velocity = dust.position.DirectionTo(NPC.Center) * Main.rand.NextFloat(2f, 5f);
+				dust.scale = Main.rand.NextFloat(1.2f, 1.5f);
 			}
 
 			return;
 		}
 
-		FadeIn++;
-		if (FadeIn > 60) {
-			FadeIn = 60;
+		_opacityDelay++;
+		if (_opacityDelay > 45) {
+			Opacity += 0.03f;
+			if (Opacity > 1f) {
+				Opacity = 1f;
+			}
 		}
+		
 
 		if (DamageDecayTimer > 0) {
 			DamageDecayTimer--;
@@ -88,22 +115,8 @@ public class ReviveCircleNPC : ModNPC
 				NPC.life = NPC.lifeMax;
 			}
 		}
-
-		float numDust = Utils.Remap(NPC.life, 0f, NPC.lifeMax, 1.5f, 0.1f);
-		for (float i = 0; i < numDust; i++) {
-			if (i == 0 && Main.rand.NextFloat() > numDust % 1f) {
-				continue;
-			}
-
-			Vector2 offset = Main.rand.NextVector2Circular(8f, 8f);
-			Dust dust = Dust.NewDustPerfect(NPC.Center + offset, ModContent.DustType<ReviveCircleDust>());
-			float startScale = Utils.Remap(NPC.life, 0f, NPC.lifeMax, 1.2f, 0.9f);
-			dust.scale = startScale + Main.rand.NextFloat(0.3f);
-			dust.velocity *= Utils.Remap(NPC.life, 0f, NPC.lifeMax, 0.5f, 0.1f);
-			dust.customData = "GoUpPlease";
-		}
 	}
-
+	
 	public override bool CheckDead() {
 		_dying = true;
 		NPC.life = 1;
@@ -114,12 +127,20 @@ public class ReviveCircleNPC : ModNPC
 		return false;
 	}
 
-	public override bool CanHitNPC(NPC target) {
-		if (_dying) {
+	public override bool? CanBeHitByItem(Player player, Item item) {
+		if (_dying || Opacity < 0.8f) {
 			return false;
 		}
+		
+		return base.CanBeHitByItem(player, item);
+	}
 
-		return base.CanHitNPC(target);
+	public override bool? CanBeHitByProjectile(Projectile projectile) {
+		if (_dying || Opacity < 0.8f) {
+			return false;
+		}
+		
+		return base.CanBeHitByProjectile(projectile);
 	}
 
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {

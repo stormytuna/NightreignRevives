@@ -12,7 +12,10 @@ public class ReplaceDeathScreen : ModSystem
 			return;
 		}
 
+		if (Main.LocalPlayer.NoReviveNPC()) {
+			return;
+		}
+
 		layers[index].Active = false;
-		// TODO: Add own custom death screen!
 	}
 }
