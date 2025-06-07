@@ -10,6 +10,23 @@ public class ServerConfig : ModConfig
 	
 	public override ConfigScope Mode => ConfigScope.ServerSide;	
 	
+	[Header("Gameplay")]
+	[DefaultValue(0.06f)]
+	[Range(0.01f, 0.5f)]
+	[ReloadRequired]
+	public float LifeMultiplier { get; set; }
+	
+	[DefaultValue(2.5f)]
+	[Range(0.5f, 10f)]
+	[ReloadRequired]
+	public float DamageDecayDelay { get; set; }
+	
+	[DefaultValue(6f)]
+	[Range(0.5f, 20f)]
+	[ReloadRequired]
+	public float DamageDecayRate { get; set; }
+	
+	[Header("Toggles")]	
 	[ReloadRequired]
 	public List<NPCDefinition> BossBlacklist { get; set; } = new();
 
@@ -21,10 +38,7 @@ public class ServerConfig : ModConfig
 	[ReloadRequired]
 	public bool EnableDuringBloodMoonAndSolarEclipse { get; set; }
 	
-	[DefaultValue(0.06f)]
-	[ReloadRequired]
-	public float LifeMultiplier { get; set; }
-	
+	[Header("Misc")]
 	[DefaultValue(true)]
 	public bool SinglePlayerWarning { get; set; }
 }

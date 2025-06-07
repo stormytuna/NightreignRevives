@@ -28,5 +28,21 @@ Configs: {
 			Label: Singleplayer Warning
 			Tooltip: Whether to display the warning in chat when joining a world in Singleplayer
 		}
+
+		DamageDecayDelay: {
+			Label: Damage Decay Delay
+			Tooltip: The time in seconds before damage towards reviving a player begins decaying
+		}
+
+		DamageDecayRate: {
+			Label: Damage Decay Rate
+			Tooltip: What percentage of the total damage needed to revive a downed player is lost per second when decaying
+		}
+
+		Headers: {
+			Gameplay: Gameplay
+			Toggles: Toggles
+			Misc: Misc
+		}
 	}
 }

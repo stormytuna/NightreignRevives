@@ -54,7 +54,7 @@ public class ReviveCircleNPC : ModNPC
 
 		if (ShouldKill()) {
 			_preemptiveKillTimer++;
-			if (_preemptiveKillTimer >= 5 * 60) {
+			if (_preemptiveKillTimer >= 2 * 60) {
 				_dying = true;
 			}
 		}
@@ -125,7 +125,7 @@ public class ReviveCircleNPC : ModNPC
 			DamageDecayTimer--;
 		}
 		else {
-			NPC.life += int.Max(NPC.lifeMax / (6 * 60), 1);
+			NPC.life += int.Max(NPC.lifeMax / ((int)(ServerConfig.Instance.DamageDecayRate * 60)), 1);
 			if (NPC.life > NPC.lifeMax) {
 				NPC.life = NPC.lifeMax;
 			}
@@ -220,7 +220,7 @@ public class ReviveCircleNPC : ModNPC
 	}
 
 	public void ResetDamageDecay() {
-		DamageDecayTimer = DamageDecayTimerMax;
+		DamageDecayTimer = (int)(ServerConfig.Instance.DamageDecayDelay * 60);
 	}
 
 	private bool ShouldKill() {
