@@ -1,1 +1,27 @@
-This description will show up on the steam page, check out https://steamcommunity.com/comment/Guide/formattinghelp.
+Nightreign Revives adds a revive system inspired by Elden Ring Nightreign.
+
+- When players die in boss fights or invasions, they instead go down, and leave a small flame
+- Other players can deal damage to this flame to stoke it, reviving the downed player after dealing enough damage
+- Automatically revives downed players if the boss is defeated, or if all players are downed
+- Compatible with most mods, please report any incompatibilities you find!
+
+[h2]Configuration[/h2]
+
+- A multiplier applied to the life of bosses when calculating damage needed to revive a player
+- Whether to enable revives during invasions
+- Whether to enable revives during a Blood Moon or Solar Eclipse
+- A boss blacklist for troublesome bosses
+
+[hr][/hr]
+
+[h2]Credits[/h2]
+
+- Incattus for sprites
+
+[hr][/hr]
+
+Source code: https://github.com/stormytuna/NightreignRevives
+
+Join the [url=https://discord.gg/yr3hUxUxpg]discord server![/url]
+
+If you enjoy my work, [url=https://ko-fi.com/stormytuna]please consider donating[/url]

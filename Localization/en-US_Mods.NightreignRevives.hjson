@@ -1,7 +1,4 @@
-NPCs: {
-	NightreignReviveNPC.DisplayName: Nightreign Revive N P C
-	ReviveCircleNPC.DisplayName: Revive Circle N P C
-}
+NPCs.ReviveCircleNPC.DisplayName: Revive Circle
 
 Configs: {
 	ServerConfig: {
@@ -13,23 +10,23 @@ Configs: {
 		}
 
 		EnableDuringInvasions: {
-			Label: Enable During Invasions
+			Label: Enable Revives during Invasions
 			Tooltip: Whether to allow revives during invasions
 		}
 
 		LifeMultiplier: {
-			Label: Life Multiplier
+			Label: Revive Life Multiplier
 			Tooltip: A multiplier applied to the life of bosses (or an arbitrary amount for invasions) to calculate the damage needed to revive a downed player
 		}
 
 		EnableDuringBloodMoonAndSolarEclipse: {
-			Label: Enable During Blood Moon And Solar Eclipse
+			Label: Enable Revives during a Blood Moon or Solar Eclipse
 			Tooltip: Whether to allow revives during a Blood Moon or Solar Eclipse
 		}
 
 		SinglePlayerWarning: {
-			Label: Single Player Warning
-			Tooltip: ""
+			Label: Singleplayer Warning
+			Tooltip: Whether to display the warning in chat when joining a world in Singleplayer
 		}
 	}
 }

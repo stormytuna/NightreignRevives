@@ -55,10 +55,10 @@ public static class NightreignReviveHelpers
 				invasionLife = 50000;
 			}
 
-			if (Main.expertMode && !Main.masterMode) {
+			if (Main.masterMode) {
 				invasionLife *= 2;
-			} else if (Main.masterMode) {
-				invasionLife *= 3;
+			} else if (Main.expertMode) {
+				invasionLife = (int)(invasionLife * 1.5);
 			}
 			
 			maxLife = (int)(invasionLife * numDownsThisFight * ServerConfig.Instance.LifeMultiplier);
@@ -85,6 +85,12 @@ public static class NightreignReviveHelpers
 		}
 		
 		maxLife = (int)(boss.lifeMax * numDownsThisFight * ServerConfig.Instance.LifeMultiplier);
+
+		if (boss.type is NPCID.EaterofWorldsBody or NPCID.EaterofWorldsHead or NPCID.EaterofWorldsTail) {
+			maxLife = Main.masterMode ? 19224 : Main.expertMode ? 15120 : 10050;
+			maxLife = (int)(maxLife * Main.CurrentFrameFlags.ActivePlayersCount * 0.35);
+		}
+
 		return true;
 	}
 }
