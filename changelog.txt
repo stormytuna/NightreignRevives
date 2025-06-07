@@ -1,0 +1,3 @@
+v1.0.1
+
+- Fixed an issue with incorrect calculations for Eater of Worlds

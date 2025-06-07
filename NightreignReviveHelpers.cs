@@ -88,7 +88,7 @@ public static class NightreignReviveHelpers
 
 		if (boss.type is NPCID.EaterofWorldsBody or NPCID.EaterofWorldsHead or NPCID.EaterofWorldsTail) {
 			maxLife = Main.masterMode ? 19224 : Main.expertMode ? 15120 : 10050;
-			maxLife = (int)(maxLife * Main.CurrentFrameFlags.ActivePlayersCount * 0.35);
+			maxLife = (int)(maxLife *  (1f + Main.CurrentFrameFlags.ActivePlayersCount * 0.35));
 		}
 
 		return true;
