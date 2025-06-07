@@ -34,7 +34,7 @@ public class NightreignRevivePlayer : ModPlayer
 		if (NightreignReviveHelpers.AnyBossOrInvasionForReviveNPC()) {
 			return;
 		}
-		
+
 		NumDownsThisFight = 0;
 		_spawnPos = null;
 		_beenRevived = false;

@@ -1,6 +1,5 @@
 using System.IO;
 using FishUtils.Helpers;
-using Microsoft.VisualBasic.CompilerServices;
 using NightreignRevives.Core;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -45,8 +44,7 @@ public class ReviveCircleNPC : ModNPC
 			_firstFrame = false;
 			NPC.life = NPC.lifeMax = LifeMax;
 
-			if (ForClient != Main.myPlayer) 
-			{
+			if (ForClient != Main.myPlayer) {
 				DustHelpers.MakeDustExplosion(NPC.Center, 30f, ModContent.DustType<ReviveCircleDust>(), 25, 1f, 5f, scale: 1.5f);
 			}
 		}
@@ -78,7 +76,7 @@ public class ReviveCircleNPC : ModNPC
 			dust.scale = startScale + Main.rand.NextFloat(0.3f);
 			dust.velocity *= Utils.Remap(NPC.life, 0f, NPC.lifeMax, 0.5f, 0.1f);
 			dust.customData = "GoUpPlease";
-			
+
 			if (ForClient == Main.myPlayer) {
 				dust.scale *= 2f;
 			}
@@ -116,7 +114,7 @@ public class ReviveCircleNPC : ModNPC
 				Dust dust = Dust.NewDustPerfect(NPC.Center + offset, ModContent.DustType<ReviveCircleDust>());
 				dust.velocity = dust.position.DirectionTo(NPC.Center) * Main.rand.NextFloat(2f, 5f);
 				dust.scale = Main.rand.NextFloat(1.2f, 1.5f);
-				
+
 				if (ForClient == Main.myPlayer) {
 					dust.scale *= 2f;
 				}
