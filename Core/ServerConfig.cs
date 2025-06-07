@@ -24,4 +24,7 @@ public class ServerConfig : ModConfig
 	[DefaultValue(0.06f)]
 	[ReloadRequired]
 	public float LifeMultiplier { get; set; }
+	
+	[DefaultValue(true)]
+	public bool SinglePlayerWarning { get; set; }
 }

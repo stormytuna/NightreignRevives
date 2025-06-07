@@ -26,5 +26,10 @@ Configs: {
 			Label: Enable During Blood Moon And Solar Eclipse
 			Tooltip: Whether to allow revives during a Blood Moon or Solar Eclipse
 		}
+
+		SinglePlayerWarning: {
+			Label: Single Player Warning
+			Tooltip: ""
+		}
 	}
 }
