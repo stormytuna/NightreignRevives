@@ -15,8 +15,6 @@ public class NightreignRevives : Mod
 	public override void HandlePacket(BinaryReader reader, int whoAmI) {
 		MessageType message = (MessageType)reader.ReadByte();
 
-		// TODO: move to classes themselves, switch case is annoying with var names in scope
-		// TODO: handle stuff without assumption we're sending from server
 		switch (message) {
 			case MessageType.PlayerRevived:
 				int playerWhoAmI = reader.Read7BitEncodedInt();

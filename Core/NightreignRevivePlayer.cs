@@ -31,13 +31,13 @@ public class NightreignRevivePlayer : ModPlayer
 	}
 
 	public override void ResetEffects() {
-		/*
-		if (!NPCHelpers.AnyActiveBossOrInvasion()) {
-			NumDownsThisFight = 0;
-			_spawnPos = null
-			// TODO: HANDLE REVIVE after boss
+		if (NightreignReviveHelpers.AnyBossOrInvasionForReviveNPC()) {
+			return;
 		}
-		*/
+		
+		NumDownsThisFight = 0;
+		_spawnPos = null;
+		_beenRevived = false;
 	}
 
 	public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource) {
@@ -63,9 +63,6 @@ public class NightreignRevivePlayer : ModPlayer
 		if (Player.AnyReviveNPC(out _)) {
 			Player.respawnTimer = 999;
 		}
-
-		// TODO: HANDLE REVIVE AFTER BOSS
-		// TODO: SPECIAL DEATH SCREEN
 	}
 
 	public static void BroadcastRevive(int playerWhoAmI) {

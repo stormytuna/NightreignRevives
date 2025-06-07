@@ -26,7 +26,7 @@ public class ServerConfig : ModConfig
 	public float DamageDecayDelay { get; set; }
 
 	[DefaultValue(6f)]
-	[Range(0.5f, 20f)]
+	[Range(2f, 100f)]
 	[ReloadRequired]
 	public float DamageDecayRate { get; set; }
 

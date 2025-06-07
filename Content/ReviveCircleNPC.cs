@@ -1,12 +1,13 @@
 using System.IO;
 using FishUtils.Helpers;
+using Microsoft.VisualBasic.CompilerServices;
 using NightreignRevives.Core;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Utils = Terraria.Utils;
 
 namespace NightreignRevives.Content;
 
-// TODO: seems to just die with zero logs if a player joins while someone is downed
 public class ReviveCircleNPC : ModNPC
 {
 	public int ForClient;
@@ -44,7 +45,10 @@ public class ReviveCircleNPC : ModNPC
 			_firstFrame = false;
 			NPC.life = NPC.lifeMax = LifeMax;
 
-			DustHelpers.MakeDustExplosion(NPC.Center, 30f, ModContent.DustType<ReviveCircleDust>(), 25, 1f, 5f, scale: 1.5f);
+			if (ForClient != Main.myPlayer) 
+			{
+				DustHelpers.MakeDustExplosion(NPC.Center, 30f, ModContent.DustType<ReviveCircleDust>(), 25, 1f, 5f, scale: 1.5f);
+			}
 		}
 
 		if (!Main.player[ForClient].active) {
@@ -74,6 +78,10 @@ public class ReviveCircleNPC : ModNPC
 			dust.scale = startScale + Main.rand.NextFloat(0.3f);
 			dust.velocity *= Utils.Remap(NPC.life, 0f, NPC.lifeMax, 0.5f, 0.1f);
 			dust.customData = "GoUpPlease";
+			
+			if (ForClient == Main.myPlayer) {
+				dust.scale *= 2f;
+			}
 		}
 
 		if (_dying) {
@@ -108,6 +116,10 @@ public class ReviveCircleNPC : ModNPC
 				Dust dust = Dust.NewDustPerfect(NPC.Center + offset, ModContent.DustType<ReviveCircleDust>());
 				dust.velocity = dust.position.DirectionTo(NPC.Center) * Main.rand.NextFloat(2f, 5f);
 				dust.scale = Main.rand.NextFloat(1.2f, 1.5f);
+				
+				if (ForClient == Main.myPlayer) {
+					dust.scale *= 2f;
+				}
 			}
 
 			return;
@@ -125,7 +137,7 @@ public class ReviveCircleNPC : ModNPC
 			DamageDecayTimer--;
 		}
 		else {
-			NPC.life += int.Max(NPC.lifeMax / ((int)(ServerConfig.Instance.DamageDecayRate * 60)), 1);
+			NPC.life += int.Max((int)((NPC.lifeMax * ServerConfig.Instance.DamageDecayRate * 0.01f) / 60f), 1);
 			if (NPC.life > NPC.lifeMax) {
 				NPC.life = NPC.lifeMax;
 			}
@@ -186,10 +198,13 @@ public class ReviveCircleNPC : ModNPC
 
 		DustHelpers.MakeDustExplosion(NPC.Center, 30f, ModContent.DustType<ReviveCircleDust>(), 10, 1f, 5f);
 
-		// TODO: variance as npc gets closer to dying
+		float progress = NPC.life / (float)NPC.lifeMax;
+		float pitch = Utils.Remap(progress, 0f, 1f, -0.1f, -0.8f);
 		SoundStyle sound = SoundID.DD2_BetsyFireballShot with {
-			Volume = 0.4f,
-			PitchRange = (-0.8f, -0.5f),
+			Volume = 0.5f,
+			Pitch = pitch,
+			PitchVariance = 0.3f,
+			MaxInstances = 3,
 		};
 
 		SoundEngine.PlaySound(sound, NPC.Center);
