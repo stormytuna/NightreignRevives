@@ -9,17 +9,17 @@ Configs: {
 
 		BossBlacklist: {
 			Label: Boss Blacklist
-			Tooltip: ""
+			Tooltip: Bosses allow revives by default, add a boss to this list to disable revives for it
 		}
 
 		EnableDuringInvasions: {
 			Label: Enable During Invasions
-			Tooltip: ""
+			Tooltip: Whether to allow revives during invasions
 		}
 
 		LifeMultiplier: {
 			Label: Life Multiplier
-			Tooltip: ""
+			Tooltip: A multiplier applied to the life of bosses (or an arbitrary amount for invasions) to calculate the damage needed to revive a downed player
 		}
 	}
 }
