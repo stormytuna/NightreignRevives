@@ -8,6 +8,7 @@ Nightreign Revives adds a revive system inspired by Elden Ring Nightreign.
 [h2]Configuration[/h2]
 
 - A multiplier applied to the life of bosses when calculating damage needed to revive a player
+- Damage decay delay and rate
 - Whether to enable revives during invasions
 - Whether to enable revives during a Blood Moon or Solar Eclipse
 - A blacklist for troublesome bosses
