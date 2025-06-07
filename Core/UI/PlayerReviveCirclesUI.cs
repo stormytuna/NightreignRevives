@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Terraria.UI;
 
-namespace NightreignRevives.Core;
+namespace NightreignRevives.Core.UI;
 
 [Autoload(Side = ModSide.Client)]
 public class PlayerReviveCirclesUI : ModSystem

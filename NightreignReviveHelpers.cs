@@ -65,6 +65,12 @@ public static class NightreignReviveHelpers
 			return true;
 		}
 
+		if (ServerConfig.Instance.EnableDuringBloodMoonAndSolarEclipse && (Main.bloodMoon || Main.eclipse)) {
+			int life = NPC.downedPlantBoss ? 50000 : Main.hardMode ? 25000 : 10000;
+			maxLife = (int)(life * numDownsThisFight * ServerConfig.Instance.LifeMultiplier);
+			return true;
+		}
+
 		NPC boss = null;
 		foreach (NPC npc in Main.ActiveNPCs) {
 			var notBlacklisted = !ServerConfig.Instance.BossBlacklist.Contains(new NPCDefinition(npc.type));

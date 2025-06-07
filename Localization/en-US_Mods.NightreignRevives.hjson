@@ -21,5 +21,10 @@ Configs: {
 			Label: Life Multiplier
 			Tooltip: A multiplier applied to the life of bosses (or an arbitrary amount for invasions) to calculate the damage needed to revive a downed player
 		}
+
+		EnableDuringBloodMoonAndSolarEclipse: {
+			Label: Enable During Blood Moon And Solar Eclipse
+			Tooltip: Whether to allow revives during a Blood Moon or Solar Eclipse
+		}
 	}
 }

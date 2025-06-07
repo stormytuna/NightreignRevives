@@ -4,7 +4,7 @@ using ReLogic.Content;
 using Terraria.DataStructures;
 using Terraria.UI;
 
-namespace NightreignRevives.Core;
+namespace NightreignRevives.Core.UI;
 
 public class PlayerReviveCirclesUIState : UIState
 {
