@@ -9,7 +9,7 @@ public class SingleplayerWarningSystem : ModSystem
 		if (Main.netMode != NetmodeID.SinglePlayer) {
 			return;
 		}
-		
+
 		_warnDelay--;
 		if (_warnDelay <= 0 && !_warned && ServerConfig.Instance.SinglePlayerWarning) {
 			_warned = true;

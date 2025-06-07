@@ -131,7 +131,7 @@ public class ReviveCircleNPC : ModNPC
 			}
 		}
 	}
-	
+
 	public override bool CheckDead() {
 		_dying = true;
 		NPC.life = 1;
@@ -235,10 +235,10 @@ public class ReviveCircleNPC : ModNPC
 		int numLivingPlayersNearby = 0;
 		foreach (Player player in Main.player) {
 			if (!player.dead && player.WithinRange(NPC.Center, 500f * 16f)) {
-				numLivingPlayersNearby++;	
+				numLivingPlayersNearby++;
 			}
 		}
-		
+
 		return numLivingPlayersNearby < 1;
 	}
 }

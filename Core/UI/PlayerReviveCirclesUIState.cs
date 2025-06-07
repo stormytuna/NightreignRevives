@@ -25,9 +25,9 @@ public class PlayerReviveCirclesUIState : UIState
 
 		foreach (Player player in Main.ActivePlayers) {
 			if (player.whoAmI == Main.myPlayer) {
-				continue;		
+				continue;
 			}
-			
+
 			if (player.AnyReviveNPC(out NPC reviveNPC)) {
 				if (reviveNPC.ModNPC is not ReviveCircleNPC reviveCircleNPC) {
 					continue;
@@ -39,7 +39,7 @@ public class PlayerReviveCirclesUIState : UIState
 
 		// Drawing local players last so it appears at top
 		if (Main.LocalPlayer.AnyReviveNPC(out NPC localReviveNPC)) {
-			DrawReviveCircle(localReviveNPC, localReviveNPC.ModNPC as ReviveCircleNPC, Main.LocalPlayer);	
+			DrawReviveCircle(localReviveNPC, localReviveNPC.ModNPC as ReviveCircleNPC, Main.LocalPlayer);
 		}
 
 		Main.spriteBatch.Begin(sbParams);

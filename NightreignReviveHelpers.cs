@@ -27,9 +27,9 @@ public static class NightreignReviveHelpers
 		if (ServerConfig.Instance.EnableDuringInvasions && Main.invasionType != InvasionID.None) {
 			return true;
 		}
-		
+
 		foreach (NPC npc in Main.ActiveNPCs) {
-			var notBlacklisted = !ServerConfig.Instance.BossBlacklist.Contains(new NPCDefinition(npc.type));
+			bool notBlacklisted = !ServerConfig.Instance.BossBlacklist.Contains(new NPCDefinition(npc.type));
 			if (npc.CountsAsBoss() && notBlacklisted) {
 				return true;
 			}
@@ -40,8 +40,8 @@ public static class NightreignReviveHelpers
 
 	public static bool TryGetReviveNPCStats(this Player player, out int maxLife) {
 		maxLife = 0;
-		int numDownsThisFight = player.GetModPlayer<NightreignRevivePlayer>().NumDownsThisFight;	
-		
+		int numDownsThisFight = player.GetModPlayer<NightreignRevivePlayer>().NumDownsThisFight;
+
 		if (ServerConfig.Instance.EnableDuringInvasions && Main.invasionType != InvasionID.None) {
 			int invasionLife = Main.invasionType switch {
 				InvasionID.GoblinArmy => Main.hardMode ? 15000 : 5000,
@@ -57,10 +57,11 @@ public static class NightreignReviveHelpers
 
 			if (Main.masterMode) {
 				invasionLife *= 2;
-			} else if (Main.expertMode) {
+			}
+			else if (Main.expertMode) {
 				invasionLife = (int)(invasionLife * 1.5);
 			}
-			
+
 			maxLife = (int)(invasionLife * numDownsThisFight * ServerConfig.Instance.LifeMultiplier);
 			return true;
 		}
@@ -73,17 +74,16 @@ public static class NightreignReviveHelpers
 
 		NPC boss = null;
 		foreach (NPC npc in Main.ActiveNPCs) {
-			var notBlacklisted = !ServerConfig.Instance.BossBlacklist.Contains(new NPCDefinition(npc.type));
+			bool notBlacklisted = !ServerConfig.Instance.BossBlacklist.Contains(new NPCDefinition(npc.type));
 			if (npc.CountsAsBoss() && notBlacklisted && npc.lifeMax > (boss?.lifeMax ?? 0)) {
 				boss = npc;
 			}
 		}
-		
-		if (boss is null) 
-		{
+
+		if (boss is null) {
 			return false;
 		}
-		
+
 		maxLife = (int)(boss.lifeMax * numDownsThisFight * ServerConfig.Instance.LifeMultiplier);
 
 		if (boss.type is NPCID.EaterofWorldsBody or NPCID.EaterofWorldsHead or NPCID.EaterofWorldsTail) {
