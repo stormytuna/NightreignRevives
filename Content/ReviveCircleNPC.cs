@@ -21,6 +21,7 @@ public class ReviveCircleNPC : ModNPC
 	private int _dyingTimer = 90;
 	private bool _dead = false;
 	private int _opacityDelay;
+	private int _preemptiveKillTimer;
 
 	public override void SetDefaults() {
 		NPC.width = 40;
@@ -44,6 +45,21 @@ public class ReviveCircleNPC : ModNPC
 			NPC.life = NPC.lifeMax = LifeMax;
 
 			DustHelpers.MakeDustExplosion(NPC.Center, 30f, ModContent.DustType<ReviveCircleDust>(), 25, 1f, 5f, scale: 1.5f);
+		}
+
+		if (!Main.player[ForClient].active) {
+			NPC.active = false;
+			return;
+		}
+
+		if (ShouldKill()) {
+			_preemptiveKillTimer++;
+			if (_preemptiveKillTimer >= 5 * 60) {
+				_dying = true;
+			}
+		}
+		else {
+			_preemptiveKillTimer = 0;
 		}
 
 		float numDust = Utils.Remap(NPC.life, 0f, NPC.lifeMax, 1.5f, 0.3f);
@@ -105,7 +121,6 @@ public class ReviveCircleNPC : ModNPC
 			}
 		}
 
-
 		if (DamageDecayTimer > 0) {
 			DamageDecayTimer--;
 		}
@@ -116,11 +131,11 @@ public class ReviveCircleNPC : ModNPC
 			}
 		}
 	}
-
+	
 	public override bool CheckDead() {
 		_dying = true;
 		NPC.life = 1;
-		return _dead;
+		return _dead || !Main.player[ForClient].active;
 	}
 
 	public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position) {
@@ -206,5 +221,24 @@ public class ReviveCircleNPC : ModNPC
 
 	public void ResetDamageDecay() {
 		DamageDecayTimer = DamageDecayTimerMax;
+	}
+
+	private bool ShouldKill() {
+		if (!NightreignReviveHelpers.AnyBossOrInvasionForReviveNPC()) {
+			return true;
+		}
+
+		if (Main.CurrentFrameFlags.ActivePlayersCount <= 1) {
+			return true;
+		}
+
+		int numLivingPlayersNearby = 0;
+		foreach (Player player in Main.player) {
+			if (!player.dead && player.WithinRange(NPC.Center, 500f * 16f)) {
+				numLivingPlayersNearby++;	
+			}
+		}
+		
+		return numLivingPlayersNearby < 1;
 	}
 }

@@ -2,3 +2,24 @@ NPCs: {
 	NightreignReviveNPC.DisplayName: Nightreign Revive N P C
 	ReviveCircleNPC.DisplayName: Revive Circle N P C
 }
+
+Configs: {
+	ServerConfig: {
+		DisplayName: Server Config
+
+		BossBlacklist: {
+			Label: Boss Blacklist
+			Tooltip: ""
+		}
+
+		EnableDuringInvasions: {
+			Label: Enable During Invasions
+			Tooltip: ""
+		}
+
+		LifeMultiplier: {
+			Label: Life Multiplier
+			Tooltip: ""
+		}
+	}
+}
