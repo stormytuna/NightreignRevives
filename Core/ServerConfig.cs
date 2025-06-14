@@ -41,6 +41,10 @@ public class ServerConfig : ModConfig
 	[DefaultValue(false)]
 	[ReloadRequired]
 	public bool EnableDuringBloodMoonAndSolarEclipse { get; set; }
+	
+	[DefaultValue(false)]
+	[ReloadRequired]
+	public bool AllowRegularRespawnTimerInBackground { get; set; }
 
 	[Header("Misc")]
 	[DefaultValue(true)]

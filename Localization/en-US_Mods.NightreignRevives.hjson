@@ -44,5 +44,14 @@ Configs: {
 			Toggles: Toggles
 			Misc: Misc
 		}
+
+		AllowRegularRespawnTimerInBackground: {
+			Label: Allow Regular Respawn Timer In Background
+			Tooltip:
+				'''
+				By default, the only way to revive downed players is to deal enough damage to their flame, or defeating the active boss or invasion.
+				If this is enabled, the regular respawn timer is active in the background, but is not shown visibly.
+				'''
+		}
 	}
 }

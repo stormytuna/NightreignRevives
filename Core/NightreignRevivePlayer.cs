@@ -8,7 +8,7 @@ public class NightreignRevivePlayer : ModPlayer
 	public int NumDownsThisFight = 0;
 
 	private bool _beenRevived = false;
-	private Point? _spawnPos = null;
+	private Vector2? _spawnPos = null;
 
 	public void Revive() {
 		_beenRevived = true;
@@ -24,7 +24,7 @@ public class NightreignRevivePlayer : ModPlayer
 		orig(self, context);
 
 		if (nrPlayer._spawnPos is not null) {
-			self.Center = nrPlayer._spawnPos.Value.ToVector2();
+			self.Teleport(nrPlayer._spawnPos.Value, -1, -1);	
 			self.AddImmuneTime(ImmunityCooldownID.General, 60);
 			nrPlayer._spawnPos = null;
 		}
@@ -41,7 +41,7 @@ public class NightreignRevivePlayer : ModPlayer
 	}
 
 	public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource) {
-		_spawnPos = Player.Center.ToPoint();
+		_spawnPos = Player.position;
 		NumDownsThisFight++;
 
 		if (Main.netMode != NetmodeID.Server) {
@@ -60,7 +60,7 @@ public class NightreignRevivePlayer : ModPlayer
 			return;
 		}
 
-		if (Player.AnyReviveNPC(out _)) {
+		if (Player.AnyReviveNPC(out _) && !ServerConfig.Instance.AllowRegularRespawnTimerInBackground) {
 			Player.respawnTimer = 999;
 		}
 	}

@@ -1,3 +1,4 @@
-v1.0.1
+v1.0.2
 
-- Fixed an issue with incorrect calculations for Eater of Worlds
+- Fixed an issue causing players to take fall damage when respawning
+- Added a config option to allow the regular respawn timer to tick down in the background
