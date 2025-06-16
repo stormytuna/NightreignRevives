@@ -208,6 +208,16 @@ public class ReviveCircleNPC : ModNPC
 		SoundEngine.PlaySound(sound, NPC.Center);
 	}
 
+	// Normally wouldn't be required, but some mods are allowing it to hit players somehow
+	// Hopefully they respect this
+	public override bool CanHitPlayer(Player target, ref int cooldownSlot) {
+		return false;
+	}
+
+	public override bool CanHitNPC(NPC target) {
+		return false;
+	}
+
 	public override void SendExtraAI(BinaryWriter writer) {
 		writer.Write7BitEncodedInt(ForClient);
 		writer.Write(LifeMax);

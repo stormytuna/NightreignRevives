@@ -1,4 +1,3 @@
-v1.0.2
+v1.0.3
 
-- Fixed an issue causing players to take fall damage when respawning
-- Added a config option to allow the regular respawn timer to tick down in the background
+- Attempted fix for revive circle NPC dealing contact damage to players
