@@ -24,7 +24,7 @@ public class NightreignRevivePlayer : ModPlayer
 		orig(self, context);
 
 		if (nrPlayer._spawnPos is not null) {
-			self.Teleport(nrPlayer._spawnPos.Value, -1, -1);	
+			self.Teleport(nrPlayer._spawnPos.Value, -1, -1);
 			self.AddImmuneTime(ImmunityCooldownID.General, 60);
 			nrPlayer._spawnPos = null;
 		}
