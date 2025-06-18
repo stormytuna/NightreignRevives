@@ -1,3 +1,3 @@
-v1.0.3
+v1.0.4
 
-- Attempted fix for revive circle NPC dealing contact damage to players
+- Fixed an issue where players were reviving where they died, even when no boss or invasion was active

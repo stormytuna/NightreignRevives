@@ -41,15 +41,13 @@ public class NightreignRevivePlayer : ModPlayer
 	}
 
 	public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource) {
-		_spawnPos = Player.position;
-		NumDownsThisFight++;
-
-		if (Main.netMode != NetmodeID.Server) {
-			return;
-		}
-
 		if (Player.TryGetReviveNPCStats(out int lifeMax)) {
-			NPC.NewNPC(Player.GetSource_Death(), (int)Player.Center.X, (int)Player.Center.Y, ModContent.NPCType<ReviveCircleNPC>(), ai0: Player.whoAmI, ai1: lifeMax);
+			_spawnPos = Player.position;
+			NumDownsThisFight++;
+			
+			if (Main.netMode != NetmodeID.MultiplayerClient) {
+				NPC.NewNPC(Player.GetSource_Death(), (int)Player.Center.X, (int)Player.Center.Y, ModContent.NPCType<ReviveCircleNPC>(), ai0: Player.whoAmI, ai1: lifeMax);
+			}
 		}
 	}
 
