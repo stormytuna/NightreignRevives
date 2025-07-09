@@ -30,6 +30,12 @@ public class ServerConfig : ModConfig
 	[ReloadRequired]
 	public float DamageDecayRate { get; set; }
 
+ 	[DefaultValue(100f)]
+    [Range(1f, 500f)]
+    [Slider]
+    [ReloadRequired]
+    public int ReviveHealth { get; set; }
+
 	[Header("Toggles")]
 	[ReloadRequired]
 	public List<NPCDefinition> BossBlacklist { get; set; } = new();
