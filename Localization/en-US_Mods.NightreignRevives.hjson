@@ -19,6 +19,11 @@ Configs: {
 			Tooltip: A multiplier applied to the life of bosses (or an arbitrary amount for invasions) to calculate the damage needed to revive a downed player
 		}
 
+		ReviveHealth: {
+			Label: Revive Health
+			Tooltip: The exact amount of life a player is restored to after reviving.
+		}
+
 		EnableDuringBloodMoonAndSolarEclipse: {
 			Label: Enable Revives during a Blood Moon or Solar Eclipse
 			Tooltip: Whether to allow revives during a Blood Moon or Solar Eclipse
