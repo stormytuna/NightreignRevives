@@ -55,6 +55,12 @@ public class NightreignRevivePlayer : ModPlayer
 		if (_beenRevived) {
 			_beenRevived = false;
 			Player.respawnTimer = 0;
+
+   			int lifeToGive = ServerConfig.Instance.ReviveHealth;
+	  		lifeToGive = Math.Clamp(lifeToGive, 1, Player.statLifeMax2);
+	 		Player.statLife = lifeToGive;
+        	Player.HealEffect(lifeToGive, true);
+
 			return;
 		}
 
