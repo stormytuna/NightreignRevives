@@ -84,7 +84,8 @@ public static class NightreignReviveHelpers
 			return false;
 		}
 
-		maxLife = (int)(boss.lifeMax * numDownsThisFight * ServerConfig.Instance.LifeMultiplier);
+		// Downs + 1 as downs start at 0 and are incremented after this method is called
+		maxLife = (int)(boss.lifeMax * (numDownsThisFight + 1) * ServerConfig.Instance.LifeMultiplier);
 
 		if (boss.type is NPCID.EaterofWorldsBody or NPCID.EaterofWorldsHead or NPCID.EaterofWorldsTail) {
 			maxLife = Main.masterMode ? 19224 : Main.expertMode ? 15120 : 10050;

@@ -1,4 +1,4 @@
 displayName = Nightreign Revives
 author = stormytuna
-version = 1.0.4
-homepage = https://github.com/stormytuna/NightreignRevives
+version = 1.1.0
+homepage = https://discord.gg/yr3hUxUxpg

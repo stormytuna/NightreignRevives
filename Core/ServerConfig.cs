@@ -30,11 +30,11 @@ public class ServerConfig : ModConfig
 	[ReloadRequired]
 	public float DamageDecayRate { get; set; }
 
- 	[DefaultValue(100f)]
-    [Range(1f, 500f)]
-    [Slider]
+ 	[DefaultValue(0.5f)]
+    [Range(0f, 1f)]
+    [Increment(0.05f)]
     [ReloadRequired]
-    public int ReviveHealth { get; set; }
+    public float RevivedPlayerLifePercent { get; set; }
 
 	[Header("Toggles")]
 	[ReloadRequired]

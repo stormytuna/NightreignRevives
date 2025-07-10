@@ -1,3 +1,4 @@
+using FishUtils.Helpers;
 using NightreignRevives.Content;
 using Terraria.DataStructures;
 
@@ -25,8 +26,13 @@ public class NightreignRevivePlayer : ModPlayer
 
 		if (nrPlayer._spawnPos is not null) {
 			self.Teleport(nrPlayer._spawnPos.Value, -1, -1);
-			self.AddImmuneTime(ImmunityCooldownID.General, 60);
+			self.ApplyStandardImmuneTime();
 			nrPlayer._spawnPos = null;
+			
+			int reviveLife = (int)(ServerConfig.Instance.RevivedPlayerLifePercent * self.statLifeMax2);
+	  		reviveLife = int.Clamp(reviveLife, 1, self.statLifeMax2);
+		    self.statLife = reviveLife;
+		    self.HealEffect(reviveLife);
 		}
 	}
 
@@ -55,11 +61,6 @@ public class NightreignRevivePlayer : ModPlayer
 		if (_beenRevived) {
 			_beenRevived = false;
 			Player.respawnTimer = 0;
-
-   			int lifeToGive = ServerConfig.Instance.ReviveHealth;
-	  		lifeToGive = Math.Clamp(lifeToGive, 1, Player.statLifeMax2);
-	 		Player.statLife = lifeToGive;
-        	Player.HealEffect(lifeToGive, true);
 
 			return;
 		}

@@ -19,9 +19,9 @@ Configs: {
 			Tooltip: A multiplier applied to the life of bosses (or an arbitrary amount for invasions) to calculate the damage needed to revive a downed player
 		}
 
-		ReviveHealth: {
-			Label: Revive Health
-			Tooltip: The exact amount of life a player is restored to after reviving.
+		ReviveHealthPercent: {
+			Label: Revived Player Life
+			Tooltip: The percentage of a downed player's life that is restored when they're revived
 		}
 
 		EnableDuringBloodMoonAndSolarEclipse: {
@@ -57,6 +57,11 @@ Configs: {
 				By default, the only way to revive downed players is to deal enough damage to their flame, or defeating the active boss or invasion.
 				If this is enabled, the regular respawn timer is active in the background, but is not shown visibly.
 				'''
+		}
+
+		RevivedPlayerLifePercent: {
+			Label: Revived Player Life Percent
+			Tooltip: ""
 		}
 	}
 }
