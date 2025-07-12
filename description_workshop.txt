@@ -2,6 +2,7 @@ Nightreign Revives adds a revive system inspired by Elden Ring Nightreign.
 
 - When players die in boss fights or invasions, they instead go down, and leave a small flame
 - Other players can deal damage to this flame to stoke it, reviving the downed player after dealing enough damage
+- Damage needed to revive a player scales with the active boss' health, or arbitrary values for vanilla events
 - Automatically revives downed players if the boss is defeated, or if all players are downed
 - Compatible with most mods, please report any incompatibilities you find!
 
