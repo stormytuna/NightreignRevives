@@ -255,13 +255,6 @@ public class ReviveCircleNPC : ModNPC
 			return true;
 		}
 
-		int numLivingPlayersNearby = 0;
-		foreach (Player player in Main.player) {
-			if (!player.dead && player.WithinRange(NPC.Center, 500f * 16f)) {
-				numLivingPlayersNearby++;
-			}
-		}
-
-		return numLivingPlayersNearby < 1;
+		return false;
 	}
 }
