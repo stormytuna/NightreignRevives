@@ -19,7 +19,7 @@ Nightreign Revives adds a revive system inspired by Elden Ring Nightreign.
 
 [h2]Credits[/h2]
 
-- Incattus for UI sprites
+- incattus for UI sprites
 - pilchardheck for help with icon sprite
 - ezrn for original respawn life config PR
 
